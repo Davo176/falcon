@@ -1,6 +1,12 @@
 Falcon
 ======
 
+To make additional tests
+cd Reference_Implementation/falcon__/falcon__int
+make all
+./build/kat__intRand
+where __ is 512 or 1024
+
 This archive contains the following files and directories:
 
 Reference_Implementation/
