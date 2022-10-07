@@ -774,7 +774,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	const int8_t *restrict F, const int8_t *restrict G,
 	const uint16_t *hm, unsigned logn, fpr *restrict tmp)
 {
-	printf("here now\n");
 	size_t n, u;
 	fpr *t0, *t1, *tx, *ty;
 	fpr *b00, *b01, *b10, *b11, *g00, *g01, *g11;
@@ -801,7 +800,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	Zf(FFT)(b10, logn);
 	Zf(poly_neg)(b01, logn);
 	Zf(poly_neg)(b11, logn);
-	printf("here now\n");
 
 	/*
 	 * Compute the Gram matrix G = B·B*. Formulas are:
@@ -819,7 +817,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	 */
 	t0 = b11 + n;
 	t1 = t0 + n;
-	printf("here now\n");
 
 	memcpy(t0, b01, n * sizeof *b01);
 	Zf(poly_mulselfadj_fft)(t0, logn);    // t0 <- b01*adj(b01)
@@ -836,7 +833,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	memcpy(t1, b11, n * sizeof *b11);
 	Zf(poly_mulselfadj_fft)(t1, logn);    // t1 <- b11*adj(b11)
 	Zf(poly_add)(b10, t1, logn);      // b10 <- g11
-	printf("here now\n");
 
 	/*
 	 * We rename variables to make things clearer. The three elements
@@ -849,7 +845,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	b01 = t0;
 	t0 = b01 + n;
 	t1 = t0 + n;
-	printf("here now\n");
 
 	/*
 	 * Memory layout at that point:
@@ -865,7 +860,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 		t1[u] = fpr_zero;
 		*/
 	}
-	printf("here now\n");
 
 	/*
 	 * Apply the lattice basis to obtain the real target
@@ -878,7 +872,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	Zf(poly_mulconst)(t1, fpr_neg(ni), logn);
 	Zf(poly_mul_fft)(t0, b11, logn);
 	Zf(poly_mulconst)(t0, ni, logn);
-	printf("here now\n");
 
 	/*
 	 * b01 and b11 can be discarded, so we move back (t0,t1).
@@ -888,7 +881,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	memcpy(b11, t0, n * 2 * sizeof *t0);
 	t0 = g11 + n;
 	t1 = t0 + n;
-	printf("here now\n");
 
 	/*
 	 * Apply sampling; result is written over (t0,t1).
@@ -922,7 +914,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	Zf(poly_neg)(b11, logn);
 	tx = t1 + n;
 	ty = tx + n;
-	printf("here now\n");
 
 	/*
 	 * Get the lattice point corresponding to that tiny vector.
@@ -940,7 +931,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 	Zf(poly_add)(t1, ty, logn);
 	Zf(iFFT)(t0, logn);
 	Zf(iFFT)(t1, logn);
-	printf("here now\n");
 
 	s1tmp = (int16_t *)tx;
 	sqn = 0;
@@ -954,7 +944,6 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
 		s1tmp[u] = (int16_t)z;
 	}
 	sqn |= -(ng >> 31);
-	printf("here now\n");
 
 	/*
 	 * With "normal" degrees (e.g. 512 or 1024), it is very
@@ -1244,7 +1233,6 @@ Zf(sign_dyn)(int16_t *sig, inner_shake256_context *rng,
 	const uint16_t *hm, unsigned logn, uint8_t *tmp)
 {
 	fpr *ftmp;
-	printf("in here\n");
 	ftmp = (fpr *)tmp;
 	for (;;) {
 		/*
@@ -1273,12 +1261,10 @@ Zf(sign_dyn)(int16_t *sig, inner_shake256_context *rng,
 		/*
 		 * Do the actual signature.
 		 */
-		printf("in here\n");
 
 		if (do_sign_dyn(samp, samp_ctx, sig,
 			f, g, F, G, hm, logn, ftmp))
 		{
-			printf("in here\n");
 
 			break;
 		}

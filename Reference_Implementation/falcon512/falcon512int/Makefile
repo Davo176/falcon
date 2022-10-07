@@ -18,12 +18,12 @@ OBJ1 = build/codec.o build/common.o build/fft.o build/fpr.o build/keygen.o build
 
 OBJ2 = build/PQCgenKAT_sign.o build/katrng.o
 
-OBJ3 = build/addSignTest.o build/katrng.o
+OBJ3 = build/addRand.o build/katrng.o
 
 HEAD1 = api.h fpr.h inner.h
 HEAD2 = api.h ../../../KAT/generator/katrng.h
 
-all: build build/kat512int
+all: build build/kat512int build/kat1024intRand
 
 build:
 	-mkdir build
@@ -34,8 +34,8 @@ clean:
 build/kat512int: $(OBJ1) $(OBJ2)
 	$(LD) $(LDFLAGS) -o build/kat512int $(OBJ1) $(OBJ2) $(LIBS)
 
-build/addSign512: $(OBJ1) $(OBJ3)
-	$(LD) $(LDFLAGS) -o build/addSign512 $(OBJ1) $(OBJ3) $(LIBS)
+build/kat1024intRand: $(OBJ1) $(OBJ3)
+	$(LD) $(LDFLAGS) -o build/kat512intRand $(OBJ1) $(OBJ3) $(LIBS)
 
 build/codec.o: codec.c $(HEAD1)
 	$(CC) $(CFLAGS) -c -o build/codec.o codec.c
@@ -70,8 +70,8 @@ build/vrfy.o: vrfy.c $(HEAD1)
 build/PQCgenKAT_sign.o: ../../../KAT/generator/PQCgenKAT_sign.c $(HEAD2)
 	$(CC) $(CFLAGS) -I . -DALGNAME=falcon512int -c -o build/PQCgenKAT_sign.o ../../../KAT/generator/PQCgenKAT_sign.c
 
-build/addSignTest.o: ../../../KAT/generator/addSignTest.c $(HEAD2)
-	$(CC) $(CFLAGS) -I . -DALGNAME=falcon512int -c -o build/addSignTest.o ../../../KAT/generator/addSignTest.c
+build/addRand.o: ../../../KAT/generator/addRand.c $(HEAD2)
+	$(CC) $(CFLAGS) -I . -DALGNAME=falcon512intRand -c -o build/addRand.o ../../../KAT/generator/addRand.c
 
 build/katrng.o: ../../../KAT/generator/katrng.c $(HEAD2)
 	$(CC) $(CFLAGS) -I . -c -o build/katrng.o ../../../KAT/generator/katrng.c

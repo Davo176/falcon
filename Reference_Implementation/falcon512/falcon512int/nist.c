@@ -113,58 +113,44 @@ crypto_sign(unsigned char *sm, unsigned long long *smlen,
 	/*
 	 * Decode the private key.
 	 */
-	 printf("error here\n");
 	if (sk[0] != 0x50 + 9) {
-		printf("returning here\n");
 		return -1;
 	}
 	u = 1;
 	v = Zf(trim_i8_decode)(f, 9, Zf(max_fg_bits)[9],
 		sk + u, CRYPTO_SECRETKEYBYTES - u);
-	 printf("error here\n");
 	
 	if (v == 0) {
-		printf("returning here\n");
 		return -1;
 	}
 	u += v;
 	v = Zf(trim_i8_decode)(g, 9, Zf(max_fg_bits)[9],
 		sk + u, CRYPTO_SECRETKEYBYTES - u);
-	 printf("error here\n");
 	
 	if (v == 0) {
-		printf("returning here\n");
 		return -1;
 	}
 	u += v;
 	v = Zf(trim_i8_decode)(F, 9, Zf(max_FG_bits)[9],
 		sk + u, CRYPTO_SECRETKEYBYTES - u);
-	 printf("error here\n");
 	
 	if (v == 0) {
-		printf("returning here\n");
 		return -1;
 	}
 	u += v;
-	 printf("error here\n");
 
 	if (u != CRYPTO_SECRETKEYBYTES) {
-		printf("returning here\n");
 		return -1;
 	}
-	 printf("error here\n");
 
 	if (!Zf(complete_private)(G, f, g, F, 9, tmp.b)) {
-		printf("returning here\n");
 		return -1;
 	}
-	printf("still going\n");
 
 	/*
 	 * Create a random nonce (40 bytes).
 	 */
 	randombytes(nonce, sizeof nonce);
-printf("still going\n");
 	/*
 	 * Hash message nonce + message into a vector.
 	 */
@@ -173,7 +159,7 @@ printf("still going\n");
 	inner_shake256_inject(&sc, m, mlen);
 	inner_shake256_flip(&sc);
 	Zf(hash_to_point_vartime)(&sc, r.hm, 9);
-printf("still going\n");
+
 	/*
 	 * Initialize a RNG.
 	 */
@@ -182,13 +168,13 @@ printf("still going\n");
 	inner_shake256_inject(&sc, seed, sizeof seed);
 	inner_shake256_flip(&sc);
 
-printf("still going\n");
+
 	/*
 	 * Compute the signature.
 	 */
 	Zf(sign_dyn)(r.sig, &sc, f, g, F, G, r.hm, 9, tmp.b);
 
-printf("still going\n");
+
 	/*
 	 * Encode the signature and bundle it with the message. Format is:
 	 *   signature length     2 bytes, big-endian
