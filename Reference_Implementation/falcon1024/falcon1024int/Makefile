@@ -18,11 +18,14 @@ OBJ1 = build/codec.o build/common.o build/fft.o build/fpr.o build/keygen.o build
 
 OBJ2 = build/PQCgenKAT_sign.o build/katrng.o
 OBJ3 = build/addRand.o build/katrng.o
+OBJ4 = build/createKeyPairs.o build/katrng.o
+OBJ5 = build/createSigned.o build/katrng.o
+OBJ6 = build/checkSigned.o build/katrng.o
 
 HEAD1 = api.h fpr.h inner.h
 HEAD2 = api.h ../../../KAT/generator/katrng.h
 
-all: build build/kat1024int build/kat1024intRand
+all: build build/kat1024int build/kat1024intcreateKP build/kat1024intcreateSigned build/kat1024intcheckSigned
 
 build:
 	-mkdir build
@@ -35,6 +38,15 @@ build/kat1024int: $(OBJ1) $(OBJ2)
 
 build/kat1024intRand: $(OBJ1) $(OBJ3)
 	$(LD) $(LDFLAGS) -o build/kat1024intRand $(OBJ1) $(OBJ3) $(LIBS)
+
+build/kat1024intcreateKP: $(OBJ1) $(OBJ4)
+	$(LD) $(LDFLAGS) -o build/createKeyPairs $(OBJ1) $(OBJ4) $(LIBS)
+
+build/kat1024intcreateSigned: $(OBJ1) $(OBJ5)
+	$(LD) $(LDFLAGS) -o build/createSigned $(OBJ1) $(OBJ5) $(LIBS)
+
+build/kat1024intcheckSigned: $(OBJ1) $(OBJ6)
+	$(LD) $(LDFLAGS) -o build/checkSigned $(OBJ1) $(OBJ6) $(LIBS)
 
 build/codec.o: codec.c $(HEAD1)
 	$(CC) $(CFLAGS) -c -o build/codec.o codec.c
@@ -70,7 +82,16 @@ build/PQCgenKAT_sign.o: ../../../KAT/generator/PQCgenKAT_sign.c $(HEAD2)
 	$(CC) $(CFLAGS) -I . -DALGNAME=falcon1024int -c -o build/PQCgenKAT_sign.o ../../../KAT/generator/PQCgenKAT_sign.c
 
 build/addRand.o: ../../../KAT/generator/addRand.c $(HEAD2)
-	$(CC) $(CFLAGS) -I . -DALGNAME=falcon1024intRand -c -o build/addRand.o ../../../KAT/generator/addRand.c
+	$(CC) $(CFLAGS) -I . -DALGNAME=falcon1024int -c -o build/addRand.o ../../../KAT/generator/addRand.c
+
+build/createKeyPairs.o: ../../../KAT/generator/createKeyPairs.c $(HEAD2)
+	$(CC) $(CFLAGS) -I . -DALGNAME=falcon1024 -c -o build/createKeyPairs.o ../../../KAT/generator/createKeyPairs.c
+
+build/createSigned.o: ../../../KAT/generator/createSigned.c $(HEAD2)
+	$(CC) $(CFLAGS) -I . -DALGNAME=falcon1024 -c -o build/createSigned.o ../../../KAT/generator/createSigned.c
+
+build/checkSigned.o: ../../../KAT/generator/checkSigned.c $(HEAD2)
+	$(CC) $(CFLAGS) -I . -DALGNAME=falcon1024 -c -o build/checkSigned.o ../../../KAT/generator/checkSigned.c
 
 build/katrng.o: ../../../KAT/generator/katrng.c $(HEAD2)
 	$(CC) $(CFLAGS) -I . -c -o build/katrng.o ../../../KAT/generator/katrng.c
