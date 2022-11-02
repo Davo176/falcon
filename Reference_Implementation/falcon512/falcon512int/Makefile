@@ -26,7 +26,7 @@ OBJ6 = build/checkSigned.o build/katrng.o
 HEAD1 = api.h fpr.h inner.h
 HEAD2 = api.h ../../../KAT/generator/katrng.h
 
-all: build build/kat512int kat512intRand build/kat512intcreateKP build/kat512intcreateSigned build/kat512intcheckSigned
+all: build build/kat512int build/kat512intRand build/kat512intcreateKP build/kat512intcreateSigned build/kat512intcheckSigned
 
 build:
 	-mkdir build
