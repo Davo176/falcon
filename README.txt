@@ -7,6 +7,17 @@ make all
 ./build/kat__intRand
 where __ is 512 or 1024
 
+For interoperability you will have to manually change the code to switch between java and csharp
+The best way to do this is to replace all instances of java with csharp, or vice versa
+Then you can:
+cd Reference_Implementation/falcon__/falcon__int
+make all
+./build/kat__intcreateKP
+./build/kat__intcreateSigned
+./build/kat__intcheckSigned
+where __ is 512 or 1024
+
+
 This archive contains the following files and directories:
 
 Reference_Implementation/
