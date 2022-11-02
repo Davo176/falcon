@@ -12,9 +12,9 @@ The best way to do this is to replace all instances of java with csharp, or vice
 Then you can:
 cd Reference_Implementation/falcon__/falcon__int
 make all
-./build/kat__intcreateKP
-./build/kat__intcreateSigned
-./build/kat__intcheckSigned
+./build/createKeyPairs
+./build/createSigned
+./build/checkSigned
 where __ is 512 or 1024
 
 

@@ -32,7 +32,7 @@ build:
 	-mkdir build
 
 clean:
-	-rm -f build/kat512int $(OBJ1) $(OBJ2)
+	-rm -f build/kat512int $(OBJ1) $(OBJ2) $(OBJ3) $(OBJ4) $(OBJ5) $(OBJ6)
 
 build/kat512int: $(OBJ1) $(OBJ2)
 	$(LD) $(LDFLAGS) -o build/kat512int $(OBJ1) $(OBJ2) $(LIBS)
@@ -91,7 +91,7 @@ build/createKeyPairs.o: ../../../KAT/generator/createKeyPairs.c $(HEAD2)
 build/createSigned.o: ../../../KAT/generator/createSigned.c $(HEAD2)
 	$(CC) $(CFLAGS) -I . -DALGNAME=falcon512 -c -o build/createSigned.o ../../../KAT/generator/createSigned.c
 
-build/createSigned.o: ../../../KAT/generator/checkSigned.c $(HEAD2)
+build/checkSigned.o: ../../../KAT/generator/checkSigned.c $(HEAD2)
 	$(CC) $(CFLAGS) -I . -DALGNAME=falcon512 -c -o build/checkSigned.o ../../../KAT/generator/checkSigned.c
 
 build/katrng.o: ../../../KAT/generator/katrng.c $(HEAD2)
